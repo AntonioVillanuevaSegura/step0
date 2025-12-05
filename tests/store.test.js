@@ -52,6 +52,7 @@ describe ('getById', () =>{
 	
 })
 
+//Esperamos que el elemento sea devuelto incluyendo el id y anadido a la Db
 describe ('create', () =>{
 	it ("Debe retornar el item creado ",async () =>{
 		const newItem = {id:fixtures.length+1,message: 'test 3'}
@@ -61,8 +62,8 @@ describe ('create', () =>{
 	})		
 	
 	it ("Debe anadir el item a la Db ",async () =>{
-		const newItem = {id:fixtures.length+1,message: 'test 3'}
-		const item = await create (newItem.message)
+		const newItem = {id:fixtures.length+1,message: 'test 3b'}
+		const {id} = await create (newItem.message)
 		expect (item).toEqual (newItem)
 		
 	})		
@@ -70,3 +71,55 @@ describe ('create', () =>{
 	
 	
 })
+
+describe ('updateById',() =>{
+	
+	it ("Debe retornar undefined cuando no hay item para esa id ",async () =>{
+	
+		const item = await updateById (inventedId)
+		expect (item).toBeUndefined ()
+		
+	})
+	
+	
+	it ("No debe retornar el item actualizado ",async () =>{
+	
+		const updatedItem = {id:existingId,message:'updated'}
+		expect (item).toBeUndefined ()
+		
+	})				
+	
+
+	it ("Debe actualizar el item. en la Db ",async () =>{
+	
+		const updatedItem = {id:existingId,message:'updated'}
+		const item =await getById (existingId)
+		expect (item).toEqual (updatedItem)
+		
+	})	
+	
+	
+})
+
+
+//Ultimos tests deleteById
+describe ('deleteById', () =>{
+	
+	it ("Debe retornar indefinido cuando no existe un item. con dicha id ",async () =>{
+		const item =await deletedById (invented)
+		expect (item).toBeUndefined()
+	})		
+	
+	it ("No debe retornar el item. borrado",async () =>{
+		const item =await deletedById (existing)
+		expect (item).toBeUndefined()
+	})		
+	
+	it ("Debe borrar el item. de la Db",async () =>{
+		await deleteById (existing)
+		const items = await getAll()
+		expect (item).toEqual (fixtures.filter (item => item.id !=== existing))
+	})		
+	
+})
+
