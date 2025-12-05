@@ -42,7 +42,7 @@ describe ('store', () => { // Nivel 1: Módulo completo
 	//Tests para getById
 	describe ('getById', () =>{
 		it ("Retorna undefined cuando no hay elemento con la id",async () =>{
-			const item = await getById (invented)
+			const item = await getById (inventedId)
 			expect (item).toBeUndefined()
 		})	
 		
@@ -65,6 +65,7 @@ describe ('store', () => { // Nivel 1: Módulo completo
 		it ("Debe anadir el item a la Db ",async () =>{
 			const newItem = {id:fixtures.length+1,message: 'test 3b'}
 			const {id} = await create (newItem.message)
+			const item = await create (newItem.message)
 			expect (item).toEqual (newItem)
 			
 		})		
@@ -106,19 +107,19 @@ describe ('store', () => { // Nivel 1: Módulo completo
 	describe ('deleteById', () =>{
 		
 		it ("Debe retornar indefinido cuando no existe un item. con dicha id ",async () =>{
-			const item =await deleteById (invented)
+			const item =await deleteById (inventedId)
 			expect (item).toBeUndefined()
 		})		
 		
 		it ("No debe retornar el item. borrado",async () =>{
-			const item =await deleteById (existing)
+			const item =await deleteById (existingId)
 			expect (item).toBeUndefined()
 		})		
 		
 		it ("Debe borrar el item. de la Db",async () =>{
-			await deleteById (existing)
+			await deleteById (existingId)
 			const items = await getAll()
-			expect (item).toEqual (fixtures.filter (item => item.id !== existing))
+			expect (items).toEqual (fixtures.filter (item => item.id !== existingId))
 		})		
 		
 	})
