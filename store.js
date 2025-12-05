@@ -9,7 +9,7 @@ const readData = async () =>{
 
 const getAll =readData
 
-const getById = async (id) =>{
+const getById = async (id) => {
 	const data = await readData()
 	return data.find(item => item.id === id)
 }
@@ -17,7 +17,7 @@ const getById = async (id) =>{
 const create = async (message) => {
 	const data =await readData()
 	const newItem = {message,id:data.length+1}
-	await saveChanges (data.concat([newItem])
+	await saveChanges (data.concat([newItem]))
 	return newItem
 }
 
@@ -28,7 +28,7 @@ const updateById = async (id, message) => {
 			return { ... current, message}
 		}
 		return current
-	}
+	})
 }
 
 const deleteById = async id =>{

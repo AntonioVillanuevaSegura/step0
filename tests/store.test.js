@@ -1,6 +1,8 @@
 import {getAll ,getById,create,updateById,deleteById} from '../store.js'
 import {writeFileSync} from 'node:fs'
 import { join } from 'node:path'
+import {describe, it, expect, beforeEach, afterAll} from '@jest/globals' 
+
 const dbPath = join (process.cwd(),'db.json')
 
 const restoreDb = () =>writeFileSync (dbPath,JSON.stringify ([]))
@@ -15,111 +17,112 @@ const existingId = fixtures [0].id
 
 //describe testing con frameworks
 //Test para store
-describe ('store', () => {
+describe ('store', () => { // Nivel 1: Módulo completo
 	beforeEach ( () =>populateDb (fixtures))
 	afterAll (restoreDb)
-	//Aqui van los Tests .... 
-}
-
-//Test para getAll
-describe ('getAll' , () => {
-	
-	it ("Retorna un array vacio si no hay datos",async () =>{
-		restoreDb()
-		const data = await getAll()
-		expect (data).toEqual ([])
+	//Aqui van anidados todos los tests 
+			
+	//Test para getAll
+	describe ('getAll' , () => {// Nivel 2
+		
+		it ("Retorna un array vacio si no hay datos",async () =>{
+			restoreDb()
+			const data = await getAll()
+			expect (data).toEqual (fixtures)
+			
+		})
+		
+		it ("Retorna un array con un item cuando hay un item",async () => {
+			const data = await getAll()
+			expect (data).toEqual (fixtures)
+		})	
 		
 	})
-	
-	it ("Retorna un array con un item cuando hay un item",async () =>{
-		const data = await getAll()
-		expect (data).toEqual ([])
-	})	
-	
-})
 
-//Tests para getById
-describe ('getById', () =>{
-	it ("Retorna undefined cuando no hay elemento con la id",async () =>{
-		const item = await getById (invented)
-		expect (item).toBeUndefined()
-	})	
-	
-	it ("retorna el item con la id",async () =>{
-		const item = await getById (fixtures[0].id)
-		expect (item).toEqual (fixtures[0])
-	})	
-	
-})
-
-//Esperamos que el elemento sea devuelto incluyendo el id y anadido a la Db
-describe ('create', () =>{
-	it ("Debe retornar el item creado ",async () =>{
-		const newItem = {id:fixtures.length+1,message: 'test 3'}
-		const item = await create (newItem.message)
-		expect (item).toEqual (newItem)
+	//Tests para getById
+	describe ('getById', () =>{
+		it ("Retorna undefined cuando no hay elemento con la id",async () =>{
+			const item = await getById (invented)
+			expect (item).toBeUndefined()
+		})	
 		
-	})		
-	
-	it ("Debe anadir el item a la Db ",async () =>{
-		const newItem = {id:fixtures.length+1,message: 'test 3b'}
-		const {id} = await create (newItem.message)
-		expect (item).toEqual (newItem)
-		
-	})		
-	
-	
-	
-})
-
-describe ('updateById',() =>{
-	
-	it ("Debe retornar undefined cuando no hay item para esa id ",async () =>{
-	
-		const item = await updateById (inventedId)
-		expect (item).toBeUndefined ()
+		it ("retorna el item con la id",async () =>{
+			const item = await getById (fixtures[0].id)
+			expect (item).toEqual (fixtures[0])
+		})	
 		
 	})
-	
-	
-	it ("No debe retornar el item actualizado ",async () =>{
-	
-		const updatedItem = {id:existingId,message:'updated'}
-		expect (item).toBeUndefined ()
+
+	//Esperamos que el elemento sea devuelto incluyendo el id y anadido a la Db
+	describe ('create', () =>{
+		it ("Debe retornar el item creado ",async () =>{
+			const newItem = {id:fixtures.length+1,message: 'test 3'}
+			const item = await create (newItem.message)
+			expect (item).toEqual (newItem)
+			
+		})		
 		
-	})				
-	
-
-	it ("Debe actualizar el item. en la Db ",async () =>{
-	
-		const updatedItem = {id:existingId,message:'updated'}
-		const item =await getById (existingId)
-		expect (item).toEqual (updatedItem)
+		it ("Debe anadir el item a la Db ",async () =>{
+			const newItem = {id:fixtures.length+1,message: 'test 3b'}
+			const {id} = await create (newItem.message)
+			expect (item).toEqual (newItem)
+			
+		})		
 		
-	})	
-	
-	
-})
+		
+		
+	})
+
+	describe ('updateById',() =>{
+		
+		it ("Debe retornar undefined cuando no hay item para esa id ",async () =>{
+		
+			const item = await updateById (inventedId)
+			expect (item).toBeUndefined ()
+			
+		})
+		
+		
+		it ("No debe retornar el item actualizado ",async () =>{
+		
+			const updatedItem = {id:existingId,message:'updated'}
+			expect (item).toBeUndefined ()
+			
+		})				
+		
+
+		it ("Debe actualizar el item. en la Db ",async () =>{
+		
+			const updatedItem = {id:existingId,message:'updated'}
+			const item =await getById (existingId)
+			expect (item).toEqual (updatedItem)
+			
+		})	
+		
+		
+	})
+
+	//Ultimos tests deleteById
+	describe ('deleteById', () =>{
+		
+		it ("Debe retornar indefinido cuando no existe un item. con dicha id ",async () =>{
+			const item =await deleteById (invented)
+			expect (item).toBeUndefined()
+		})		
+		
+		it ("No debe retornar el item. borrado",async () =>{
+			const item =await deleteById (existing)
+			expect (item).toBeUndefined()
+		})		
+		
+		it ("Debe borrar el item. de la Db",async () =>{
+			await deleteById (existing)
+			const items = await getAll()
+			expect (item).toEqual (fixtures.filter (item => item.id !== existing))
+		})		
+		
+	})
 
 
-//Ultimos tests deleteById
-describe ('deleteById', () =>{
-	
-	it ("Debe retornar indefinido cuando no existe un item. con dicha id ",async () =>{
-		const item =await deletedById (invented)
-		expect (item).toBeUndefined()
-	})		
-	
-	it ("No debe retornar el item. borrado",async () =>{
-		const item =await deletedById (existing)
-		expect (item).toBeUndefined()
-	})		
-	
-	it ("Debe borrar el item. de la Db",async () =>{
-		await deleteById (existing)
-		const items = await getAll()
-		expect (item).toEqual (fixtures.filter (item => item.id !=== existing))
-	})		
-	
 })
 
