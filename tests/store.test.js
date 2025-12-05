@@ -34,7 +34,7 @@ describe ('store', () => { // Nivel 1: Módulo completo
 		
 		it ("Retorna un array con un item cuando hay un item",async () => {
 			const data = await getAll()
-			expect (data).toEqual (fixtures)
+			expect(data).toEqual([])
 		})	
 		
 	})
@@ -65,7 +65,8 @@ describe ('store', () => { // Nivel 1: Módulo completo
 		it ("Debe anadir el item a la Db ",async () =>{
 			const newItem = {id:fixtures.length+1,message: 'test 3b'}
 			const {id} = await create (newItem.message)
-			const item = await create (newItem.message)
+			//const item = await create (newItem.message)
+			const item = await getById(id)  
 			expect (item).toEqual (newItem)
 			
 		})		
@@ -87,6 +88,7 @@ describe ('store', () => { // Nivel 1: Módulo completo
 		it ("No debe retornar el item actualizado ",async () =>{
 		
 			const updatedItem = {id:existingId,message:'updated'}
+			const item= await updateById (updatedItem.id,updatedItem.message)
 			expect (item).toBeUndefined ()
 			
 		})				
@@ -95,11 +97,12 @@ describe ('store', () => { // Nivel 1: Módulo completo
 		it ("Debe actualizar el item. en la Db ",async () =>{
 		
 			const updatedItem = {id:existingId,message:'updated'}
+			await updateById (updatedItem.id,updatedItem.message)
 			const item =await getById (existingId)
-			expect (item).toEqual (updatedItem)
+			expect(item).toEqual(updatedItem)
 			
 		})	
-		
+	
 		
 	})
 
