@@ -30,6 +30,7 @@ const updateById = async (id, message) => {
 		}
 		return current
 	})
+	await saveChanges (newData)
 }
 
 

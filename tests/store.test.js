@@ -78,10 +78,8 @@ describe ('store', () => { // Nivel 1: Módulo completo
 	describe ('updateById',() =>{
 		
 		it ("Debe retornar undefined cuando no hay item para esa id ",async () =>{
-		
 			const item = await updateById (inventedId)
 			expect (item).toBeUndefined ()
-			
 		})
 		
 	
@@ -90,13 +88,13 @@ describe ('store', () => { // Nivel 1: Módulo completo
 			const updatedItem = {id:existingId,message:'updated'}
 			const item= await updateById (updatedItem.id,updatedItem.message)
 			expect (item).toBeUndefined ()
-			
 		})				
 	
 		it ("Debe actualizar el item. en la Db ",async () =>{
 		
-			const updatedItem = {id:existingId,message:'updated'}
-			await updateById (updatedItem.id,updatedItem.message)
+			const updatedItem = {id:existingId,message:'updated'} //
+			//const updatedItem = {id:existingId,message:'test'} //ok 
+			await updateById (updatedItem.id , updatedItem.message)
 			const item =await getById (existingId)
 			expect(item).toEqual(updatedItem)
 			
