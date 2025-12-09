@@ -28,13 +28,13 @@ describe ('store', () => { // Nivel 1: Módulo completo
 		it ("Retorna un array vacio si no hay datos",async () =>{
 			restoreDb()
 			const data = await getAll()
-			expect (data).toEqual (fixtures)
-			
+			//expect (data).toEqual (fixtures)
+			 expect(data).toEqual([])  // Cambia fixtures por []
 		})
 		
 		it ("Retorna un array con un item cuando hay un item",async () => {
 			const data = await getAll()
-			expect(data).toEqual([])
+			expect(data).toEqual(fixtures)
 		})	
 		
 	})
@@ -84,7 +84,7 @@ describe ('store', () => { // Nivel 1: Módulo completo
 			
 		})
 		
-		
+	
 		it ("No debe retornar el item actualizado ",async () =>{
 		
 			const updatedItem = {id:existingId,message:'updated'}
@@ -92,8 +92,7 @@ describe ('store', () => { // Nivel 1: Módulo completo
 			expect (item).toBeUndefined ()
 			
 		})				
-		
-
+	
 		it ("Debe actualizar el item. en la Db ",async () =>{
 		
 			const updatedItem = {id:existingId,message:'updated'}
