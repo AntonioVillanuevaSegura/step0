@@ -124,12 +124,12 @@ describe ('Server', () =>{
 			it.todo ("Debe retornar 200 cuando se borra whisper")
 		*/
 		it ("Debe retornar 404 cuando el whisper no existe",async () => {
-			const response = await supertest (app).delete (` /api/v1/whisper/${existingId}`)
+			const response = await supertest (app).delete (`/api/v1/whisper/${existingId}`)
 			expect (response.status).toBe(404)
 		})
 		
 		it ("Debe retornar 200 cuando se borra whisper",async () => {
-			const response = await supertest (app).delete (` /api/v1/whisper/${existingId}`)
+			const response = await supertest (app).delete (`/api/v1/whisper/${existingId}`)
 			expect (response.status).toBe(200)
 			
 			//Cambios en Db
