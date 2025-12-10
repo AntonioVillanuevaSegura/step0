@@ -1,24 +1,26 @@
 import {getAll ,getById,create,updateById,deleteById} from '../store.js'
+import {restoreDb,populateDb} from './utils.js'
+import {whispers,inventedId,existingId} from './fixtures.js'
 import {writeFileSync} from 'node:fs'
 import { join } from 'node:path'
 import {describe, it, expect, beforeEach, afterAll} from '@jest/globals' 
 
-const dbPath = join (process.cwd(),'db.json')
+//const dbPath = join (process.cwd(),'db.json')
 
-const restoreDb = () =>writeFileSync (dbPath,JSON.stringify ([]))
-const populateDb = (data) =>writeFileSync (dbPath,JSON.stringify (data))
+//const restoreDb = () =>writeFileSync (dbPath,JSON.stringify ([]))
+//const populateDb = (data) =>writeFileSync (dbPath,JSON.stringify (data))
 
 //Fixtures conjunto de datos predefinidos y fijos, para probar la Db
-const fixtures = [ {id:1,message:'test'} ,{id:2,message:'hello world'}]
+//const whispers = [ {id:1,message:'test'} ,{id:2,message:'hello world'}]
 
-const inventedId = 12345
+//const inventedId = 12345
 
-const existingId = fixtures [0].id
+//const existingId = whispers [0].id
 
 //describe testing con frameworks
 //Test para store
 describe ('store', () => { // Nivel 1: Módulo completo
-	beforeEach ( () =>populateDb (fixtures))
+	beforeEach ( () =>populateDb (whispers))
 	afterAll (restoreDb)
 	//Aqui van anidados todos los tests 
 			
@@ -34,7 +36,7 @@ describe ('store', () => { // Nivel 1: Módulo completo
 		
 		it ("Retorna un array con un item cuando hay un item",async () => {
 			const data = await getAll()
-			expect(data).toEqual(fixtures)
+			expect(data).toEqual(whispers)
 		})	
 		
 	})
@@ -47,8 +49,8 @@ describe ('store', () => { // Nivel 1: Módulo completo
 		})	
 		
 		it ("retorna el item con la id",async () =>{
-			const item = await getById (fixtures[0].id)
-			expect (item).toEqual (fixtures[0])
+			const item = await getById (whispers[0].id)
+			expect (item).toEqual (whispers[0])
 		})	
 		
 	})
@@ -56,14 +58,14 @@ describe ('store', () => { // Nivel 1: Módulo completo
 	//Esperamos que el elemento sea devuelto incluyendo el id y anadido a la Db
 	describe ('create', () =>{
 		it ("Debe retornar el item creado ",async () =>{
-			const newItem = {id:fixtures.length+1,message: 'test 3'}
+			const newItem = {id:whispers.length+1,message: 'test 3'}
 			const item = await create (newItem.message)
 			expect (item).toEqual (newItem)
 			
 		})		
 		
 		it ("Debe anadir el item a la Db ",async () =>{
-			const newItem = {id:fixtures.length+1,message: 'test 3b'}
+			const newItem = {id:whispers.length+1,message: 'test 3b'}
 			const {id} = await create (newItem.message)
 			//const item = await create (newItem.message)
 			const item = await getById(id)  
@@ -119,7 +121,7 @@ describe ('store', () => { // Nivel 1: Módulo completo
 		it ("Debe borrar el item. de la Db",async () =>{
 			await deleteById (existingId)
 			const items = await getAll()
-			expect (items).toEqual (fixtures.filter (item => item.id !== existingId))
+			expect (items).toEqual (whispers.filter (item => item.id !== existingId))
 		})		
 		
 	})
