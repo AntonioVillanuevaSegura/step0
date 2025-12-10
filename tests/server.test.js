@@ -39,12 +39,13 @@ describe ('Server', () =>{
 			const response = await supertest (app).get (`/api/v1/whisper/${inventedId}`)
 			expect (response.status).toBe (404)
 		})
+		
 		it ("Debe retornar los detalles del whisper",async () => {
 			const response = await supertest (app).get (`/api/v1/whisper/${existingId}`)
 			expect (response.status).toBe (200)
-			expect (response.body).toEqual (whispers.find (w => w.id === existingId))
-			
+			expect (response.body).toEqual (whispers.find (w => w.id === existingId))			
 		})
+		
 	})
 	
 	describe ("POST /api/v1/whisper ", () =>{
@@ -53,19 +54,22 @@ describe ('Server', () =>{
 			it.todo ("Debe retornar 201 cuando se crea el whisper")
 			*/
 			it ("Debe retornar 400 cuando el cuerpo esta vacio",async () =>{
-				const response = await supertest(app).post(`/api/v1/whisper/`).send ({})
+				const response = await supertest(app).post(`/api/v1/whisper`).send ({})
 				expect (response.status).toBe (400)
 			})			
 			
 			it ("Debe retornar 400 cuando el body es invalido",async () =>{
-				const response = await supertest(app).post(`/api/v1/whisper/`).send ({invented: "This is a new whisper"})
+				const response = await supertest(app).post(`/api/v1/whisper`).send ({invented: "This is a new whisper"})
 				expect (response.status).toBe (400)
 			})	
 			
 			
 		
 			it ("Debe retornar 201 cuando se crea el whisper" ,async () => {
-				const response = await supertest(app).post(`/api/v1/whisper/`).send ({message : newWhisper.message})
+		
+				const newWhisper = {id:whispers.lenght + 1, message" This is a New whisper" }
+				const response = await supertest (app).post("/api/v1/whisper").send ({message:newWhisper.message})
+				
 				//Respuesta HTTP
 				expect (response.status).toBe (201)
 				expect (response.body).toEqual (newWhisper.id)
