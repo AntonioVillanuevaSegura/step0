@@ -22,7 +22,7 @@ describe ('Server', () =>{
 				expect (response.body).toEqual ([])
 			})
 			
-			if ("Debe retornar todos los whispers",async () =>{
+			it ("Debe retornar todos los whispers",async () =>{
 				const response = await supertest (app).get ("/api/v1/whisper")
 				expect (response.status).toBe (200)
 				expect (response.body ).toEqual (whispers)
@@ -67,7 +67,7 @@ describe ('Server', () =>{
 		
 			it ("Debe retornar 201 cuando se crea el whisper" ,async () => {
 		
-				const newWhisper = {id:whispers.lenght + 1, message" This is a New whisper" }
+				const newWhisper = {id:whispers.lenght + 1, message:" This is a New whisper" }
 				const response = await supertest (app).post("/api/v1/whisper").send ({message:newWhisper.message})
 				
 				//Respuesta HTTP
