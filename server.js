@@ -76,6 +76,6 @@ app.delete ('api/v1/whisper/:id',async (req,res) => {
 		await deleteBy(id);
 		res.sendStatus (200);
 	}
-}
+})
 
 export {app}
