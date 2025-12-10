@@ -99,12 +99,12 @@ describe ('Server', () =>{
 		})	
 		
 		it ("Debe retornar 404 cuando el whisper no existe",async () =>{
-			const response = await supertest (app).put (` /api/v1/whisper/${inventedId}`).send({message: "Whisper actualizado"})
+			const response = await supertest (app).put (` /api/v1/whisper/${inventedId}`).send({message: "Whisper updated"})
 			expect (response.status).toBe(404)
 		})	
 		
 		it ("Debe retornar 200 cuando se actualiza whisper",async () =>{
-			const response = await supertest (app).put (` /api/v1/whisper/${existingId}`).send({message: "Whisper actualizado"})
+			const response = await supertest (app).put (` /api/v1/whisper/${existingId}`).send({message: "Whisper updated"})
 			expect (response.status).toBe(200)
 			
 			//La Db cambia
