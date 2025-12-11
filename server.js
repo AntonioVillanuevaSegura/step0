@@ -2,7 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import {getAll,getById,create,updateById,deleteById} from './store.js'
 const app=express()
-
+app.use(express.static ('public'))
 app.use (bodyParser.json())
 app.set ('view engine', 'ejs')
 
