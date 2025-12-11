@@ -3,8 +3,7 @@ import supertest from 'supertest'
 import {app} from '../server'
 import {restoreDb,populateDb} from './utils'
 import {whispers, inventedId,existingId} from './fixtures.js'
-
-import {getByid} from '../store'
+import { getById } from '../store.js';
 
 describe ('Server', () =>{
 	beforeEach (() => populateDb (whispers))
@@ -65,14 +64,15 @@ describe ('Server', () =>{
 			
 			
 		
-			it ("Debe retornar 201 cuando se crea el whisper" ,async () => {
+			it ("Debe retornar 201 cuando se crea el whisper" ,async () => {//362
 		
-				const newWhisper = {id:whispers.lenght + 1, message:" This is a New whisper" }
-				const response = await supertest (app).post("/api/v1/whisper").send ({message:newWhisper.message})
+				const newWhisper = {id:whispers.length + 1, message:" This is a New whisper" }
+				//POST 352
+				const response = await supertest (app).post('/api/v1/whisper').send ({message:newWhisper.message})
 				
 				//Respuesta HTTP
 				expect (response.status).toBe (201)
-				expect (response.body).toEqual (newWhisper.id)
+				expect (response.body).toEqual (newWhisper)// !!!!!!!!!!!!!! 
 				
 				//cambios en la Db
 				const storedWhisper = await getById (newWhisper.id)
@@ -89,22 +89,22 @@ describe ('Server', () =>{
 			it.todo ("Debe retornar 200 cuando se actualiza whisper")						
 		*/
 		it ("Debe retornar 400 cuando el cuerpo esta vacio",async () =>{
-			const response = await supertest (app).put (` /api/v1/whisper/${existingId}`).send({})
+			const response = await supertest (app).put (`/api/v1/whisper/${existingId}`).send({})
 			expect (response.status).toBe(400)
 		})
 		
 		it ("Debe retornar 400 cuando el cuerpo es invalido",async () =>{
-			const response = await supertest (app).put (` /api/v1/whisper/${existingId}`).send({invented: "This is a new field"})
+			const response = await supertest (app).put (`/api/v1/whisper/${existingId}`).send({invented: "This is a new field"})
 			expect (response.status).toBe(400)
 		})	
 		
 		it ("Debe retornar 404 cuando el whisper no existe",async () =>{
-			const response = await supertest (app).put (` /api/v1/whisper/${inventedId}`).send({message: "Whisper updated"})
+			const response = await supertest (app).put (`/api/v1/whisper/${inventedId}`).send({message: "Whisper updated"})
 			expect (response.status).toBe(404)
 		})	
 		
 		it ("Debe retornar 200 cuando se actualiza whisper",async () =>{
-			const response = await supertest (app).put (` /api/v1/whisper/${existingId}`).send({message: "Whisper updated"})
+			const response = await supertest (app).put (`/api/v1/whisper/${existingId}`).send({message: "Whisper updated"})
 			expect (response.status).toBe(200)
 			
 			//La Db cambia
@@ -123,12 +123,12 @@ describe ('Server', () =>{
 			it.todo ("Debe retornar 200 cuando se borra whisper")			
 			it.todo ("Debe retornar 200 cuando se borra whisper")
 		*/
-		it ("Debe retornar 404 cuando el whisper no existe",async () => {
-			const response = await supertest (app).delete (`/api/v1/whisper/${existingId}`)
+		it ("Debe retornar 404 cuando el whisper no existe",async () => {//366
+			const response = await supertest (app).delete (`/api/v1/whisper/${inventedId}`)
 			expect (response.status).toBe(404)
 		})
 		
-		it ("Debe retornar 200 cuando se borra whisper",async () => {
+		it ("Debe retornar 200 cuando se borra whisper",async () => {//366
 			const response = await supertest (app).delete (`/api/v1/whisper/${existingId}`)
 			expect (response.status).toBe(200)
 			

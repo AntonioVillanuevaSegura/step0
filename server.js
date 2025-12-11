@@ -20,11 +20,15 @@ app.get ('/about',async (req,res)=>{
 	res.render ('about',{whispers})
 })
 
-app.get ('/api/v1/whisper',async (req,res) => {/*...*/})
+app.get ('/api/v1/whisper',async (req,res) => {//352
+	
+	const whispers = await getAll();
+	res.json (whispers)
+	
+})
 
-
-app.get ('/api/v1/whisper/:id',async (req,res)=>{
-	const id=ParseInt (req.params.id)
+app.get ('/api/v1/whisper/:id',async (req,res)=>{//352
+	const id = parseInt (req.params.id) //338
 	const whisper = await getById (id)
 	
 	if (!whisper){
@@ -36,7 +40,7 @@ app.get ('/api/v1/whisper/:id',async (req,res)=>{
 	//res.json({id})
 })
 
-app.post ('api/v1/whisper',async (req,res) =>{
+app.post ('/api/v1/whisper',async (req,res) =>{//352
 	const  {message} = req.body;
 	if (!message){
 		res.sendStatus (400)
@@ -47,7 +51,7 @@ app.post ('api/v1/whisper',async (req,res) =>{
 	//res.status (201).json(req.body)
 })
 
-app.put ('api/v1/whisper/:id', async (req,res) => {
+app.put ('/api/v1/whisper/:id', async (req,res) => {//353
 	//const id=parseInt (req.params.id)
 	//res.sendStatus(200)
 	const { message } =req.body
@@ -66,16 +70,17 @@ app.put ('api/v1/whisper/:id', async (req,res) => {
 	
 })
 
-app.delete ('api/v1/whisper/:id',async (req,res) => {
+app.delete ('/api/v1/whisper/:id',async (req,res) => {//354
 	const id = parseInt (req.params.id)
+	const whisper = await getById (id)
 	
 	if (!whisper){
-		res.sendStatus (404);
+		res.sendStatus (404)
 		return;
-	}else{
-		await deleteBy(id);
-		res.sendStatus (200);
 	}
+	await deleteById(id);
+	res.sendStatus (200);
+	
 })
 
 export {app}

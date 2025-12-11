@@ -21,7 +21,6 @@ const create = async (message) => {
 	return newItem
 }
 
-
 const updateById = async (id, message) => {
 	const data = await readData ()
 	const newData = data.map (current => {
@@ -32,8 +31,6 @@ const updateById = async (id, message) => {
 	})
 	await saveChanges (newData)
 }
-
-
 
 const deleteById = async id =>{
 	const data = await readData()
