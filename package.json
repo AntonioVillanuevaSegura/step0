@@ -7,13 +7,13 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "node index.js",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
+    "start": "node --require dotenv/config index.js",
+    "test": "jest --setupFiles dotenv/config",
+    "test:coverage": "jest --coverage --setupFiles dotenv/config",
     "lint": "standard",
     "lint:fix": "standard --fix",
     "infra:start": "docker compose up -d --build",
-    "infra:stop": "docker compose down --remove-orphans"
+    "infra:stop": "docker compose down "
   },
   "standard": {
     "env": [
