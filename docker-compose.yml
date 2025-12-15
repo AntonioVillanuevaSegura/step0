@@ -1,0 +1,11 @@
+services:
+  database:
+    image: mongo:8.2.2
+    container_name: whispering-database
+    ports:
+      - "27017:27017"
+    volumes:
+      - db-storage:/data/db
+
+volumes:
+  db-storage:
