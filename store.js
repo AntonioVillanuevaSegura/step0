@@ -2,8 +2,7 @@ import{
 	Whisper
 }from './database.js'
 
-const getAll =Whisper.find() //carga todo el contenido
-
+const getAll = () =>Whisper.find() //carga todo el contenido
 
 const getById = id => Whisper.findById({ _id:id}) 
 
