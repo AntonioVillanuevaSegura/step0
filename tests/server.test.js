@@ -146,6 +146,14 @@ describe ('Server', () =>{
 	})
 	afterAll (closeDbConnection)
 	
+	describe ('GET /about', () =>{
+		it ('Debe retornar 200 con el total de whispers en la plataforma',async () =>{
+			const response = await supertest (app).get ('/about')
+			expect(response.status).toBe(200)
+			expect (response.text).toContain (`Currently there are ${whispers.length} whispers diponibles `)
+		})
+	})
+	
 	
 	describe ("GET /api/v1/whisper", () => {
 
