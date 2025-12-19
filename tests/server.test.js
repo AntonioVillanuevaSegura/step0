@@ -150,7 +150,8 @@ describe ('Server', () =>{
 		it ('Debe retornar 200 con el total de whispers en la plataforma',async () =>{
 			const response = await supertest (app).get ('/about')
 			expect(response.status).toBe(200)
-			expect (response.text).toContain (`Currently there are ${whispers.length} whispers diponibles `)
+			//<p>Currently there are 26 whispers available</p>.
+			expect (response.text).toContain (`Currently there are ${whispers.length} whispers available`)
 		})
 	})
 	
